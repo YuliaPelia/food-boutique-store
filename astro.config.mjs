@@ -1,5 +1,15 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
-// https://astro.build/config
-export default defineConfig({});
+import react from "@astrojs/react";
+
+import tailwind from "@astrojs/tailwind";
+
+export default defineConfig({
+  i18n: {
+    locales: ["uk", "en"],
+    defaultLocale: "en",
+  },
+
+  integrations: [react(), tailwind()],
+});

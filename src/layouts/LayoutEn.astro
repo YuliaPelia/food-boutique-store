@@ -1,9 +1,14 @@
-<!doctype html>
-<html lang="en">
+---
+import { getLangFromUrl } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<html lang={lang}>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-	<meta http-equiv="refresh" content="0;url=/en/" />
+
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -25,7 +30,7 @@
     <meta
       name="description"
       content="With Food Boutique, you're not just subscribing to food, you're
-signing up for a fresher, fitter, and happier you."
+  signing up for a fresher, fitter, and happier you."
     />
     <title>Food Boutique</title>
   </head>
@@ -33,12 +38,3 @@ signing up for a fresher, fitter, and happier you."
     <slot />
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
