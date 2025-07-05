@@ -4,6 +4,21 @@ import { languages } from "../i18n/ui";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// const object = {
+//   type: "tato",
+//   name: "Dima",
+// };
+
+// const array = ['lang', 123]
+
+// const [langer, num] = array
+
+// const {type, name} = object
+
+// console.log(langer, num);
+// array[1] // диструктуризація - це коли ти витягуєш значення з масиву або обʼєкту
+
 ---
 
 <ul>
@@ -14,7 +29,7 @@ const t = useTranslations(lang);
       </li>
     ))
   }
-  <li>
+  <li class="text-red-500 ml-4">
     <a href={`/${lang}/home/`}>
       {t("nav.home")}
     </a>
