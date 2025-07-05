@@ -1,6 +1,6 @@
 export const languages = {
   en: "English",
-  uk: "Українська",
+  ua: "Українська",
 };
 
 export const defaultLang = "en";
@@ -11,8 +11,8 @@ export const ui = {
     "nav.about": "About",
     "nav.twitter": "Twitter",
   },
-  fr: {
-    "nav.home": "Accueil",
-    "nav.about": "À propos",
+  ua: {
+    "nav.home": "Головна",
+    "nav.about": "Про нас",
   },
 } as const;
