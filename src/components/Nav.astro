@@ -2,46 +2,106 @@
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
-// const object = {
-//   type: "tato",
-//   name: "Dima",
-// };
-
-// const array = ['lang', 123]
-
-// const [langer, num] = array
-
-// const {type, name} = object
-
-// console.log(langer, num);
-// array[1] // диструктуризація - це коли ти витягуєш значення з масиву або обʼєкту
-
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
-<ul>
-  {
-    Object.entries(languages).map(([lang, label]) => (
-      <li>
-        <a href={`/${lang}/`}>{label}</a>
+<nav class="nav">
+  <div class="nav__content">
+    <ul class="nav__list">
+      <li class="">
+        <a href={`#about`} class="nav__link">
+          {t("header.nav.about")}
+        </a>
       </li>
-    ))
+      <li>
+        <a href={`#services`} class="nav__link">
+          {t("header.nav.services")}
+        </a>
+      </li>
+      <li>
+        <a href={`#portfolio`} class="nav__link">
+          {t("header.nav.portfolio")}
+        </a>
+      </li>
+      <li>
+        <a href={`#blog`} class="nav__link">
+          {t("header.nav.blog")}
+        </a>
+      </li>
+      <li>
+        <a href={`#contact`} class="nav__link">
+          {t("header.nav.contact")}
+        </a>
+      </li>
+      <li>
+        <a href={`#contactOrder`} class="nav__link">
+          {t("header.nav.contactOrder")}
+        </a>
+      </li>
+    </ul>
+
+    <div class="xl:flex xl:items-center xl:gap-10">
+      <ul class="nav__langs">
+        {
+          Object.entries(languages).map(([lang, label]) => (
+            <li class="nav__lang">
+              <a
+                class={lang === currentLang ? "nav__lang-active" : ""}
+                href={`/${lang}/`}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <button class="nav__theme xl:flex xl:flex-col xl:items-center xl:gap-2" id="theme-toggle">
+        <span id="theme-icon">☀️</span>
+        <span id="theme-text">Light</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeIcon = document.getElementById("theme-icon");
+  const themeText = document.getElementById("theme-text");
+
+  // Get initial theme from localStorage or default to light
+  const getInitialTheme = () => {
+    return localStorage.getItem("theme") || "light";
+  };
+
+  // Update theme display
+  const updateThemeDisplay = (theme) => {
+    if (theme === "dark") {
+      themeIcon.textContent = "🌙";
+      themeText.textContent = "Dark";
+    } else {
+      themeIcon.textContent = "☀️";
+      themeText.textContent = "Light";
+    }
+  };
+
+  // Set initial theme
+  const currentTheme = getInitialTheme();
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  updateThemeDisplay(currentTheme);
+  if (currentTheme === "dark") {
+    document.body.classList.add("dark");
   }
-  <li class="text-red-500 ml-4">
-    <a href={`/${lang}/home/`}>
-      {t("nav.home")}
-    </a>
-  </li>
-  <li>
-    <a href={`/${lang}/about/`}>
-      {t("nav.about")}
-    </a>
-  </li>
-  <li>
-    <a href="https://twitter.com/astrodotbuild">
-      {t("nav.twitter")}
-    </a>
-  </li>
-</ul>
+
+  // Toggle theme on button click
+  themeToggle?.addEventListener("click", () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", newTheme);
+    document.body.classList.toggle("dark");
+    localStorage.setItem("theme", newTheme);
+    updateThemeDisplay(newTheme);
+  });
+</script>

@@ -1,0 +1,48 @@
+---
+const isDark = Astro.props.isDark;
+---
+
+<div>
+  <img
+    id="logo"
+    src={`/sections/header/logo-${!isDark ? "dark" : "light"}.svg`}
+    alt="logo"
+    width={50}
+    height={50}
+    class="relative z-10  w-14 h-14 relative md:w-20 md:h-20 z-10"
+  />
+</div>
+
+<script>
+  const updateLogo = (theme: string) => {
+    const logo = document.getElementById("logo") as HTMLImageElement;
+    if (logo) {
+      logo.src = `/sections/header/logo-${theme === "dark" ? "light" : "dark"}.svg`;
+    }
+  };
+
+  const getInitialTheme = () => {
+    return localStorage.getItem("theme") || "light";
+  };
+
+  const currentTheme = getInitialTheme();
+  updateLogo(currentTheme);
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (
+        mutation.type === "attributes" &&
+        mutation.attributeName === "data-theme"
+      ) {
+        const newTheme =
+          document.documentElement.getAttribute("data-theme") || "light";
+        updateLogo(newTheme);
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+</script>

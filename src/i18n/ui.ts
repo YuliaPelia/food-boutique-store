@@ -1,18 +1,12 @@
+import { header } from "./header";
+
+export const ui = {
+  ...header,
+} as const;
+
 export const languages = {
-  en: "English",
-  ua: "Українська",
+  en: "EN",
+  ua: "UA",
 };
 
 export const defaultLang = "en";
-
-export const ui = {
-  en: {
-    "nav.home": "Home",
-    "nav.about": "About",
-    "nav.twitter": "Twitter",
-  },
-  ua: {
-    "nav.home": "Головна",
-    "nav.about": "Про нас",
-  },
-} as const;

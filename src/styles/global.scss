@@ -1,5 +1,6 @@
-/* @import "tailwindcss"; */
-/* The integration's default injected base.css file */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use "./utils/tailwind";
+
+@use "./utils/variables";
+@use "./utils/mixins";
+@use "./components/nav";
+@use "./sections/header";
