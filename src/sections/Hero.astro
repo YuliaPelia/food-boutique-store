@@ -1,0 +1,61 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+// import { languages } from "../i18n/ui";
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+
+const getCurrentTime = () => {
+    const date = new Date();
+    const hours = date.getHours().toString().padStart(2, '0');
+    return +hours
+}
+
+const time = getCurrentTime()
+
+let greeting = t('hero.greeting.day');
+
+if (time >= 23 && time <= 4 || time === 0) {
+
+
+    greeting = t('hero.greeting.night')
+}
+if (time < 12 && time > 4) {
+    greeting = t('hero.greeting.morning')
+}
+if (time > 12 && time < 18) {
+    greeting = t('hero.greeting.day')
+}
+if (time > 18 && time < 23) {
+    greeting = t('hero.greeting.evening')
+}
+
+---
+
+<section class="hero">
+  <div class="container">
+    <picture>
+      <source
+        srcset="https://res.cloudinary.com/dboiqigz3/image/upload/v1746024824/girl-at-a-computer_2_zzwlwi.webp"
+        type="image/webp"
+      />
+      <img
+        class="hero__img"
+        src="https://res.cloudinary.com/dboiqigz3/image/upload/v1746024824/girl-at-a-computer_2_zzwlwi.webp"
+        alt={t("hero.alt") as string}
+        width={195}
+        height={195}
+      />
+    </picture>
+    <div>
+      <h1 class="hero__title">{greeting}</h1>
+      <h2 class="hero__subtitle">{t("hero.title")}</h2>
+      <p class="hero__description">{t("hero.description")}</p>
+    </div>
+
+    <div class="hero__btns">
+      <button class="hero__order">{t("hero.link")}</button>
+      <button class="hero__btn">{t("hero.btn")}</button>
+    </div>
+  </div>
+</section>

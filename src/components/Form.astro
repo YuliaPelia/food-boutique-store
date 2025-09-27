@@ -1,0 +1,145 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+---
+
+<form class="form">
+  <h2>{t("form.title")}</h2>
+  <input class="form__input" type="text" placeholder={t("form.name")} name="name" />
+  <input class="form__input" type="email" placeholder={t("form.email")} name="email" />
+  <input class="form__input" type="text" placeholder={t("form.message")} name="message" />
+  <input class="form__input" type="tel" placeholder={t("form.phone")} name="phone" />
+  <select class="form__select" name={t("form.choose")} id={t("form.choose")} name="choose">
+    <option value="email">{t("form.choose")}</option>
+    <option value="phone">{t("form.choose")}</option>
+    <option value="whatsapp">{t("form.choose")}</option>
+    <option value="telegram">{t("form.choose")}</option>
+    <option value="viber">{t("form.choose")}</option>
+    <option value="skype">{t("form.choose")}</option>
+    <option value="other">{t("form.choose")}</option>
+  </select>
+  <select class="form__select" name={t("form.type")} id={t("form.type")} name="type">
+    <option value="website">{t("form.type")}</option>
+    <option value="web-application">{t("form.type")}</option>
+    <option value="other">{t("form.type")}</option>
+  </select>
+  <label class="dropdown-container">
+    <!-- <label for="hiddenSelectValue" class="dropdown-label">Choose one</label> -->
+    <button id="selectDropdownButton" type="button" class="select-dropdown-button">
+      <span id="selectedValue" class="selected-value">Choose one</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+
+    <div id="selectDropdownContent" class="select-dropdown-content">
+      <div style="padding-top: 0.25rem; padding-bottom: 0.25rem;" role="menu" aria-orientation="vertical" aria-labelledby="selectDropdownButton">
+        <a href="#" class="select-option" data-value="valor1" role="menuitem">Shoes</a>
+        <a href="#" class="select-option" data-value="valor2" role="menuitem">Shirts</a>
+        <a href="#" class="select-option" data-value="valor3" role="menuitem">Pants</a>
+        <a href="#" class="select-option" data-value="valor4" role="menuitem">Shoes</a>
+      </div>
+    </div>
+    <input type="hidden" id="hiddenSelectValue" name="selectOption" value="">
+  </label>
+  <button class="form__button" type="submit">{t("form.submit")}</button>
+</form>
+
+
+<script>
+const dropdownContent = document.getElementById("dropdownContent");
+
+function toggleDropdown(button, content) {
+  content.classList.toggle("show");
+}
+
+
+
+const selectDropdownButton = document.getElementById("selectDropdownButton");
+const selectDropdownContent = document.getElementById("selectDropdownContent");
+const selectedValueSpan = document.getElementById("selectedValue");
+const hiddenSelectValueInput = document.getElementById("hiddenSelectValue");
+const selectOptions = selectDropdownContent.querySelectorAll(".select-option");
+
+selectDropdownButton.addEventListener("click", () =>
+  toggleDropdown(selectDropdownButton, selectDropdownContent)
+);
+
+selectOptions.forEach((option) => {
+  option.addEventListener("click", function (event) {
+    event.preventDefault();
+    const value = this.getAttribute("data-value");
+    const text = this.textContent;
+
+    selectedValueSpan.textContent = text;
+    hiddenSelectValueInput.value = value;
+
+    selectDropdownContent.classList.remove("show");
+  });
+});
+
+const multiSelectDropdownButton = document.getElementById(
+  "multiSelectDropdownButton"
+);
+const multiSelectDropdownContent = document.getElementById(
+  "multiSelectDropdownContent"
+);
+const selectedMultiValuesSpan = document.getElementById("selectedMultiValues");
+const hiddenMultiSelectValueInput = document.getElementById(
+  "hiddenMultiSelectValue"
+);
+
+let selectedMultiValues = [];
+
+function updateMultiSelectDisplay() {
+  if (selectedMultiValues.length === 0) {
+    const placeholder = document.createElement("span");
+    placeholder.classList.add("placeholder");
+    placeholder.textContent = "Choose";
+  } else {
+    selectedMultiValues.forEach((value) => {
+      const optionElement = Array.from(multiSelectOptions).find(
+        (opt) => opt.getAttribute("data-value") === value
+      );
+      if (optionElement) {
+        const tag = document.createElement("span");
+        tag.classList.add("selected-tag");
+        tag.textContent = optionElement.textContent.trim();
+        selectedMultiValuesSpan.appendChild(tag);
+      }
+    });
+  }
+}
+
+
+
+updateMultiSelectDisplay();
+
+window.addEventListener("click", function (event) {
+
+  if (
+    !selectDropdownButton.contains(event.target) &&
+    selectDropdownContent.classList.contains("show")
+  ) {
+    selectDropdownContent.classList.remove("show");
+  }
+
+});
+
+window.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    if (dropdownContent.classList.contains("show")) {
+      dropdownContent.classList.remove("show");
+    }
+    if (selectDropdownContent.classList.contains("show")) {
+      selectDropdownContent.classList.remove("show");
+    }
+    if (multiSelectDropdownContent.classList.contains("show")) {
+      multiSelectDropdownContent.classList.remove("show");
+    }
+  }
+});
+
+</script>
